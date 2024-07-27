@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Admin;
-use App\Models\User;
+use App\Models\Voter;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,8 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
         Admin::factory(1)->create();
+        Voter::factory()->count(2)->create(['is_candidate' => 1]);
+        Voter::factory()->count(8)->create(['is_candidate' => 0]);
     }
 }

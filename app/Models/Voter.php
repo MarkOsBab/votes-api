@@ -16,4 +16,19 @@ class Voter extends Model
         'dob',
         'is_candidate',
     ];
+
+    public function votes()
+    {
+        return $this->hasOne(Vote::class, 'candidate_id');
+    }
+
+    public function toArray()
+    {
+        return [
+            'name' => $this->name,
+            'last_name' => $this->lastName,
+            'birth_day' => $this->dob,
+            'is_candidate' => $this->is_candidate
+        ];
+    }
 }

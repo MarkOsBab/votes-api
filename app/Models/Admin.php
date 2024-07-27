@@ -34,4 +34,14 @@ class Admin extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'lastname' => $this->lastname,
+            'email' => $this->email,
+        ];
+    }
 }

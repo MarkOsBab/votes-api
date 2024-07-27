@@ -12,7 +12,7 @@ Route::middleware('api')
             Route::post('/login', [AuthController::class, 'login'])->name('login');
             Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api')->name('logout');
             Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('auth:api')->name('refresh');
-            Route::post('/me', [AuthController::class, 'me'])->middleware('auth:api')->name('me');
+            Route::get('/me', [AuthController::class, 'me'])->middleware('auth:api')->name('me');
         });
 
         Route::group(['prefix' => 'votes'], function() {

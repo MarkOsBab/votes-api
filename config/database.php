@@ -30,6 +30,11 @@ return [
     */
 
     'connections' => [
+        'sqlite_testing' => [
+            'driver'   => 'sqlite',
+            'database' => database_path('database.testing.sqlite'),
+            'prefix'   => '',
+        ],
 
         'sqlite' => [
             'driver' => 'sqlite',

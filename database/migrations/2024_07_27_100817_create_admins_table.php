@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
-            $table->string('name', '255');
-            $table->string('lastName', '255');
+            $table->string('name', '255')->nullable(false);
+            $table->string('lastName', '255')->nullable(false);
             $table->string('email', '255')->unique('Ix_admins_emails');
-            $table->string('password', '255');
+            $table->string('password', '255')->nullable(false);
             $table->timestamps();
         });
     }

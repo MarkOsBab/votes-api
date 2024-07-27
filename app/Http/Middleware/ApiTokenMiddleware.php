@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class ApiTokenMiddleware
@@ -15,6 +16,12 @@ class ApiTokenMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $apiToken = config('app.api_token');
+
+        if(!empty($apiToken) && $request->header('api-token-key') != $apiToken) {
+            return response()->json(['error' => 'Unauthorized'], HttpResponse::HTTP_UNAUTHORIZED);
+        }
+
         return $next($request);
     }
 }

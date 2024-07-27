@@ -25,6 +25,7 @@ class Voter extends Model
     public function toArray()
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'last_name' => $this->lastName,
             'birth_day' => $this->dob,

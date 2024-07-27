@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\VoteController;
 
 Route::middleware('api')
@@ -18,5 +19,9 @@ Route::middleware('api')
         Route::group(['prefix' => 'votes'], function() {
             Route::get('', [VoteController::class, 'index'])->name('index');
             Route::post('', [VoteController::class, 'store'])->name('store');
+        });
+
+        Route::group(['prefix' => 'candidates'], function() {
+            Route::get('', [CandidateController::class, 'index']);
         });
     });

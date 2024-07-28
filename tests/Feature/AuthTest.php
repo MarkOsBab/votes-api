@@ -42,7 +42,7 @@ class AuthTest extends TestCase
         ]);
 
         $response->assertStatus(401);
-        $response->assertJson(['error' => 'Unauthorized']);
+        $response->assertJson(['error' => 'Error email or password.']);
     }
 
     public function test_it_can_get_the_authenticated_user()

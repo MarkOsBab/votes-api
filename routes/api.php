@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\StatController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,5 +24,12 @@ Route::middleware('api')
 
         Route::group(['prefix' => 'candidates'], function() {
             Route::get('', [CandidateController::class, 'index']);
+        });
+
+        Route::group([
+            'prefix' => 'dashboard',
+            'middleware' => 'auth:api',
+        ], function() {
+            Route::get('stats', [StatController::class, 'index']);
         });
     });

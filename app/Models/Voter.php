@@ -22,6 +22,11 @@ class Voter extends Model
         return $this->hasOne(Vote::class, 'candidate_id');
     }
 
+    public function voted()
+    {
+        return $this->hasMany(Vote::class, 'candidate_voted_id', 'id');
+    }
+
     public function toArray()
     {
         return [

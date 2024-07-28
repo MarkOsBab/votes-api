@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CandidateController as AdminCandidateController;
 use App\Http\Controllers\Admin\StatController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,5 +32,9 @@ Route::middleware('api')
             'middleware' => 'auth:api',
         ], function() {
             Route::get('stats', [StatController::class, 'index']);
+
+            Route::prefix('candidates')->group(function() {
+                Route::get('most-voted', [AdminCandidateController::class, 'getMostVoted']);
+            });
         });
     });

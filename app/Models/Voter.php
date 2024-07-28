@@ -31,6 +31,7 @@ class Voter extends Model
     {
         return [
             'id' => $this->id,
+            'document' => $this->document,
             'name' => $this->name,
             'last_name' => $this->lastName,
             'birth_day' => $this->dob,

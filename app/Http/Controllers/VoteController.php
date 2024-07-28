@@ -13,7 +13,8 @@ class VoteController extends Controller
 {
     public function index()
     {
-        $votes = Vote::all();
+        $votes = Vote::orderByDesc('date')
+            ->get();
 
         return response()->json($votes);
     }

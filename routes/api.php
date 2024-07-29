@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CandidateController as AdminCandidateController;
+use App\Http\Controllers\Admin\ManageController;
 use App\Http\Controllers\Admin\StatController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,10 +32,18 @@ Route::middleware('api')
             'prefix' => 'dashboard',
             'middleware' => 'auth:api',
         ], function() {
+            Route::prefix('stats')->group(function() {
+                Route::get('', [StatController::class, 'index']);
+                Route::get('candidate-votes', [StatController::class, 'getCandidateVotes']);
+            });
             Route::get('stats', [StatController::class, 'index']);
 
             Route::prefix('candidates')->group(function() {
                 Route::get('most-voted', [AdminCandidateController::class, 'getMostVoted']);
+            });
+
+            Route::prefix('management')->group(function() {
+                Route::post('change-password', [ManageController::class, 'changePassword']);
             });
         });
     });

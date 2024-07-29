@@ -20,6 +20,16 @@ class Admin extends Authenticatable implements JWTSubject
         'password'
     ];
 
+    public function passwordHistories()
+    {
+        return $this->hasMany(PasswordHistory::class);
+    }
+
+    public function storePasswordInHistory()
+    {
+        $this->passwordHistories()->create(['password' => $this->password]);
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();

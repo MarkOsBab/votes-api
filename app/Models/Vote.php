@@ -26,6 +26,7 @@ class Vote extends Model
     {
         return $this->belongsTo(Voter::class, 'candidate_voted_id');
     }
+    
 
     public function toArray()
     {

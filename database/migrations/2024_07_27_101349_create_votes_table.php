@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('candidate_id');
             $table->unsignedBigInteger('candidate_voted_id');
-            $table->date('date');
+            $table->date('date')->index();
 
             $table->foreign('candidate_id')
                   ->references('id')
@@ -28,6 +28,8 @@ return new class extends Migration
                   ->on('voters')
                   ->onDelete('cascade')
                   ->onUpdate('cascade');
+                  
+            $table->index(['candidate_id', 'candidate_voted_id']);
         });
     }
 

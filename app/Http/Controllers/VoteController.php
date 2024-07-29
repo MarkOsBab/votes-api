@@ -8,15 +8,30 @@ use App\Models\Voter;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class VoteController extends Controller
 {
     public function index()
     {
-        $votes = Vote::orderByDesc('date')
-            ->get();
+        $votes = Vote::with(['voter:id,name', 'candidate:id,name'])
+            ->orderByDesc('date')
+            ->paginate($perPage = 10, $columns = ['*'], $pageName = 'votes');
 
-        return response()->json($votes);
+        $mostVotedCandidate = Vote::select('candidate_voted_id', DB::raw('count(*) as total'))
+            ->groupBy('candidate_voted_id')
+            ->orderByDesc('total')
+            ->with('candidate:id,name')
+            ->first();
+
+        $mostVoted = $mostVotedCandidate ? array_merge($mostVotedCandidate->candidate->toArray(), ['total' => $mostVotedCandidate->total]) : null;
+
+        $response = [
+            'votes' => $votes,
+            'mostVoted' => $mostVoted,
+        ];
+
+        return response()->json($response);
     }
 
     public function store(StoreRequest $request)

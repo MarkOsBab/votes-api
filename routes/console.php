@@ -6,3 +6,7 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote')->hourly();
+
+Artisan::command('generate:random-votes', function () {
+    $this->call('generate:random-votes');
+})->describe('Genera votos aleatorios para los votantes');

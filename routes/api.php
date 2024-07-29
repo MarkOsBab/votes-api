@@ -44,6 +44,7 @@ Route::middleware('api')
 
             Route::prefix('management')->group(function() {
                 Route::post('change-password', [ManageController::class, 'changePassword']);
+                Route::post('create-voters', [ManageController::class, 'crateVoter']);
             });
         });
     });

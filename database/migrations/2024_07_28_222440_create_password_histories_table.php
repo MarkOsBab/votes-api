@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('password_histories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')
+            $table->unsignedBigInteger('admin_id');
+            $table->foreign('admin_id')
                   ->references('id')
                   ->on('voters')
                   ->onDelete('cascade');

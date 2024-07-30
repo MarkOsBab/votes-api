@@ -9,8 +9,16 @@ use Tests\TestCase;
 
 class CandidateTest extends TestCase
 {
+    use RefreshDatabase;
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->artisan('migrate');
+    }
+
     CONST url = '/api/candidates/';
-    public function test_response_structure()
+    
+    public function test_it_response_correct_json_structure()
     {
         $candidates = $this->makeCandidates(1);
         $response = $this->getJson(self::url, [

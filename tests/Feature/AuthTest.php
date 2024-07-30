@@ -89,6 +89,7 @@ class AuthTest extends TestCase
         $token = auth()->login($admin);
 
         $response = $this->withHeaders([
+            'api-token-key' => config('app.api_token'),
             'Authorization' => "Bearer $token",
         ])->getJson(self::url.'me');
 
@@ -114,6 +115,7 @@ class AuthTest extends TestCase
         $token = auth()->login($admin);
 
         $response = $this->withHeaders([
+            'api-token-key' => config('app.api_token'),
             'Authorization' => "Bearer $token",
         ])->postJson(self::url.'logout');
 
@@ -134,6 +136,7 @@ class AuthTest extends TestCase
         $token = auth()->login($admin);
 
         $response = $this->withHeaders([
+            'api-token-key' => config('app.api_token'),
             'Authorization' => "Bearer $token",
         ])->postJson(self::url.'refresh');
 
@@ -143,7 +146,9 @@ class AuthTest extends TestCase
 
     public function test_it_cannot_refresh_the_token_without_token()
     {
-        $response = $this->postJson(self::url.'refresh');
+        $response = $this->postJson(self::url.'refresh', [], [
+            'api-token-key' => config('app.api_token'),
+        ]);
 
         $response->assertStatus(401);
     }

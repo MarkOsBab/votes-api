@@ -15,11 +15,13 @@ class AuthTest extends TestCase
         $this->artisan('migrate');
     }
 
+    CONST url = '/api/auth/';
+
     public function test_it_can_login_with_valid_credentials()
     {
         $admin = $this->makeAdminUser();
 
-        $response = $this->postJson('/api/auth/login', [
+        $response = $this->postJson(self::url.'login', [
             'email' => $admin->email,
             'password' => 'password',
         ], [
@@ -34,15 +36,51 @@ class AuthTest extends TestCase
     {
         $admin = $this->makeAdminUser();
 
-        $response = $this->postJson('/api/auth/login', [
+        $response = $this->postJson(self::url.'login', [
             'email' => 'test@example.com',
             'password' => 'wrong-password',
         ], [
-            'Authorization' => 'Bearer ' . config('app.api_token'),
+            'api-token-key' => config('app.api_token'),
         ]);
 
         $response->assertStatus(401);
         $response->assertJson(['error' => 'Error email or password.']);
+    }
+
+    public function test_login_without_credentials()
+    {
+        $response = $this->postJson(self::url.'login', [], [
+            'api-token-key' => config('app.api_token'),
+        ]);
+
+        $response->assertStatus(400);
+        $response->assertExactJson([
+            'email' => [
+                'El email es requerido',
+            ],
+            'password' => [
+                'La contraseña es requerida'
+            ]
+        ]);
+    }
+
+    public function test_login_with_invalid_email()
+    {
+        $creadentials = [
+            'email' => 'test',
+            'password' => 'password',
+        ];
+
+        $response = $this->postJson(self::url.'login', $creadentials, [
+            'api-token-key' => config('app.api_token'),
+        ]);
+
+        $response->assertStatus(400);
+        $response->assertExactJson([
+            'email' => [
+                'El email no es válido',
+            ],
+        ]);
     }
 
     public function test_it_can_get_the_authenticated_user()
@@ -52,7 +90,7 @@ class AuthTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => "Bearer $token",
-        ])->getJson('/api/auth/me');
+        ])->getJson(self::url.'me');
 
         $response->assertStatus(200);
         $response->assertJson([
@@ -65,7 +103,7 @@ class AuthTest extends TestCase
 
     public function test_it_cannot_get_the_authenticated_user_without_token()
     {
-        $response = $this->getJson('/api/auth/me');
+        $response = $this->getJson(self::url.'me');
 
         $response->assertStatus(401);
     }
@@ -77,7 +115,7 @@ class AuthTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => "Bearer $token",
-        ])->postJson('/api/auth/logout');
+        ])->postJson(self::url.'logout');
 
         $response->assertStatus(200);
         $response->assertJson(['message' => 'Successfully logged out']);
@@ -85,7 +123,7 @@ class AuthTest extends TestCase
 
     public function test_it_cannot_logout_without_token()
     {
-        $response = $this->postJson('/api/auth/logout');
+        $response = $this->postJson(self::url.'logout');
 
         $response->assertStatus(401);
     }
@@ -97,7 +135,7 @@ class AuthTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => "Bearer $token",
-        ])->postJson('/api/auth/refresh');
+        ])->postJson(self::url.'refresh');
 
         $response->assertStatus(200);
         $response->assertJsonStructure(['access_token', 'token_type', 'expires_in']);
@@ -105,7 +143,7 @@ class AuthTest extends TestCase
 
     public function test_it_cannot_refresh_the_token_without_token()
     {
-        $response = $this->postJson('/api/auth/refresh');
+        $response = $this->postJson(self::url.'refresh');
 
         $response->assertStatus(401);
     }

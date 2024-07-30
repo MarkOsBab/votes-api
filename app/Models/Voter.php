@@ -33,7 +33,7 @@ class Voter extends Model
             'id' => $this->id,
             'document' => $this->document,
             'name' => $this->name,
-            'last_name' => $this->lastName,
+            'lastname' => $this->lastName,
             'birth_day' => $this->dob,
             'is_candidate' => $this->is_candidate
         ];

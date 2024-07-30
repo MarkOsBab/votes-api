@@ -42,7 +42,7 @@ class LoginRequest extends FormRequest
         return [
             'email.required' => 'El :attribute es requerido',
             'email.email' => 'El :attribute no es válido',
-            'password.required' => 'El :attribute es requerida',
+            'password.required' => 'La :attribute es requerida',
         ];
     }
 

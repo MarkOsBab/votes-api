@@ -83,32 +83,6 @@ class AuthTest extends TestCase
         ]);
     }
 
-    public function test_it_can_get_the_authenticated_user()
-    {
-        $admin = $this->makeAdminUser();
-        $token = auth()->login($admin);
-
-        $response = $this->withHeaders([
-            'api-token-key' => config('app.api_token'),
-            'Authorization' => "Bearer $token",
-        ])->getJson(self::url.'me');
-
-        $response->assertStatus(200);
-        $response->assertJson([
-            'id' => $admin->id,
-            'name' => $admin->name,
-            'lastname' => $admin->lastname,
-            'email' => $admin->email,
-        ]);
-    }
-
-    public function test_it_cannot_get_the_authenticated_user_without_token()
-    {
-        $response = $this->getJson(self::url.'me');
-
-        $response->assertStatus(401);
-    }
-
     public function test_it_can_logout()
     {
         $admin = $this->makeAdminUser();

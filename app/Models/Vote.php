@@ -5,6 +5,32 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @OA\Schema(
+ *     schema="Vote",
+ *     type="object",
+ *     description="Modelo de Voto",
+ *     @OA\Property(
+ *         property="id",
+ *         type="integer",
+ *         description="ID del voto"
+ *     ),
+ *     @OA\Property(
+ *         property="voter",
+ *         ref="#/components/schemas/Voter"
+ *     ),
+ *     @OA\Property(
+ *         property="candidate",
+ *         ref="#/components/schemas/Voter"
+ *     ),
+ *     @OA\Property(
+ *         property="date",
+ *         type="string",
+ *         format="date",
+ *         description="Fecha del voto"
+ *     )
+ * )
+*/
 class Vote extends Model
 {
     use HasFactory;

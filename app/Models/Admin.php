@@ -6,6 +6,38 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject; 
 
+/**
+ * @OA\Schema(
+ *     schema="Admin",
+ *     type="object",
+ *     description="Modelo de Administrador",
+ *     @OA\Property(
+ *         property="id",
+ *         type="integer",
+ *         description="ID del administrador"
+ *     ),
+ *     @OA\Property(
+ *         property="password",
+ *         type="string",
+ *         description="Clave del administrador"
+ *     ),
+ *     @OA\Property(
+ *         property="name",
+ *         type="string",
+ *         description="Nombre del administrador"
+ *     ),
+ *     @OA\Property(
+ *         property="lastname",
+ *         type="string",
+ *         description="Apellido del administrador"
+ *     ),
+ *     @OA\Property(
+ *         property="email",
+ *         type="string",
+ *         description="Email del administrador"
+ *     )
+ * )
+*/
 class Admin extends Authenticatable implements JWTSubject
 {
     use HasFactory;

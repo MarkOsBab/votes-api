@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\VoteController;
+use App\Http\Middleware\ApiTokenMiddleware;
 
-Route::middleware('api')
+Route::middleware(['api', ApiTokenMiddleware::class])
     ->group(function() {
         Route::group(['prefix' => 'auth'], function() {
             Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -45,4 +46,9 @@ Route::middleware('api')
                 Route::post('create-voters', [ManageController::class, 'crateVoter']);
             });
         });
+    });
+
+    Route::group(['middleware' => 'web'], function () {
+        Route::get('api/documentation', '\L5Swagger\Http\Controllers\SwaggerController@api');
+        Route::get('api/docs', '\L5Swagger\Http\Controllers\SwaggerController@api');
     });

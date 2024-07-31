@@ -19,7 +19,7 @@ class CandidateController extends Controller
             return [
                 'id' => $candidate->id,
                 'name' => $candidate->name,
-                'last_name' => $candidate->lastName,
+                'lastname' => $candidate->lastName,
                 'votes' => $candidate->voted_count,
             ];
         });

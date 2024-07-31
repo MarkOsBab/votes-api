@@ -14,14 +14,14 @@ class VoteController extends Controller
 {
     public function index()
     {
-        $votes = Vote::with(['voter:id,name', 'candidate:id,name'])
+        $votes = Vote::with(['voter:id,document,name,lastName,dob,is_candidate', 'candidate:id,document,name,lastName,dob,is_candidate'])
             ->orderByDesc('date')
-            ->paginate($perPage = 10, $columns = ['*'], $pageName = 'votes');
+            ->paginate(10, ['*'], 'votes');
 
         $mostVotedCandidate = Vote::select('candidate_voted_id', DB::raw('count(*) as total'))
             ->groupBy('candidate_voted_id')
             ->orderByDesc('total')
-            ->with('candidate:id,name')
+            ->with('candidate:id,document,name,lastName,dob,is_candidate')
             ->first();
 
         $mostVoted = $mostVotedCandidate ? array_merge($mostVotedCandidate->candidate->toArray(), ['total' => $mostVotedCandidate->total]) : null;

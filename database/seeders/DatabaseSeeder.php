@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         Admin::factory(1)->create();
-        Voter::factory()->count(8)->create(['is_candidate' => 1]);
-        Voter::factory()->count(15000)->create(['is_candidate' => 0]);
+        Voter::factory()->count(2)->create(['is_candidate' => 1]);
+        Voter::factory()->count(8)->create(['is_candidate' => 0]);
     }
 }

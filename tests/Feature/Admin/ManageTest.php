@@ -4,6 +4,7 @@ namespace Tests\Feature\Admin;
 
 use App\Models\Admin;
 use App\Models\PasswordHistory;
+use App\Models\Voter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
@@ -166,6 +167,142 @@ class ManageTest extends TestCase
         ]);
     }
 
-    
+    public function test_it_creates_a_voter_successfully()
+    {
+        $token = $this->authenticateAdmin();
+
+        $response = $this->postJson(self::url.'create-voters', [
+            'document' => '123456789',
+            'name' => 'John',
+            'lastName' => 'Doe',
+            'dob' => '1990-01-01',
+            'is_candidate' => 1,
+        ], [
+            'Authorization' => 'Bearer ' . $token,
+            'api-token-key' => config('app.api_token'),
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'id',
+            'document',
+            'name',
+            'lastname',
+            'birth_day',
+            'is_candidate',
+        ]);
+    }
+
+    public function test_it_fails_when_required_fields_are_missing()
+    {
+        $token = $this->authenticateAdmin();
+
+        $response = $this->postJson(self::url.'create-voters', [], [
+            'Authorization' => 'Bearer ' . $token,
+            'api-token-key' => config('app.api_token'),
+        ]);
+
+        $response->assertStatus(400);
+        $response->assertExactJson([
+            'document' => ['El documento es requerido'],
+            'name' => ['El nombre es requerido'],
+            'lastName' => ['El apellido es requerido'],
+            'dob' => ['La fecha de nacimiento es requerida'],
+            'is_candidate' => ['El candidato o votante es requerido'],
+        ]);
+    }
+
+    public function test_it_fails_when_document_is_not_unique()
+    {
+        $token = $this->authenticateAdmin();
+
+        Voter::create([
+            'document' => '123456789',
+            'name' => 'John',
+            'lastName' => 'Doe',
+            'dob' => '1990-01-01',
+            'is_candidate' => 1,
+        ]);
+
+        $response = $this->postJson(self::url.'create-voters', [
+            'document' => '123456789',
+            'name' => 'Jane',
+            'lastName' => 'Smith',
+            'dob' => '1992-02-02',
+            'is_candidate' => 0,
+        ], [
+            'Authorization' => 'Bearer ' . $token,
+            'api-token-key' => config('app.api_token'),
+        ]);
+
+        $response->assertStatus(400);
+        $response->assertJson([
+            'document' => ['El documento ya está registrado'],
+        ]);
+    }
+
+    public function test_it_fails_when_fields_are_too_short()
+    {
+        $token = $this->authenticateAdmin();
+
+        $response = $this->postJson(self::url.'create-voters', [
+            'document' => '1',
+            'name' => 'Jo',
+            'lastName' => 'Do',
+            'dob' => '1990-01-01',
+            'is_candidate' => 1,
+        ], [
+            'Authorization' => 'Bearer ' . $token,
+            'api-token-key' => config('app.api_token'),
+        ]);
+
+        $response->assertStatus(400);
+        $response->assertJson([
+            'name' => ['El nombre debe contener mínimo 3 caracteres'],
+            'lastName' => ['El apellido debe contener mínimo 3 caracteres'],
+        ]);
+    }
+
+    public function test_it_fails_when_dob_is_invalid()
+    {
+        $token = $this->authenticateAdmin();
+
+        $response = $this->postJson(self::url.'create-voters', [
+            'document' => '123456789',
+            'name' => 'John',
+            'lastName' => 'Doe',
+            'dob' => 'invalid-date',
+            'is_candidate' => 1,
+        ], [
+            'Authorization' => 'Bearer ' . $token,
+            'api-token-key' => config('app.api_token'),
+        ]);
+
+        $response->assertStatus(400);
+        $response->assertJson([
+            'dob' => ['La fecha de nacimiento tiene un formato incorrecto'],
+        ]);
+    }
+
+    public function test_it_fails_when_is_candidate_is_invalid()
+    {
+        $token = $this->authenticateAdmin();
+
+        $response = $this->postJson(self::url.'create-voters', [
+            'document' => '123456789',
+            'name' => 'John',
+            'lastName' => 'Doe',
+            'dob' => '1990-01-01',
+            'is_candidate' => 2,
+        ], [
+            'Authorization' => 'Bearer ' . $token,
+            'api-token-key' => config('app.api_token'),
+        ]);
+
+        $response->assertStatus(400);
+        $response->assertJson([
+            'is_candidate' => ['El candidato o votante tiene un formato inválido'],
+        ]);
+    }
 
 }

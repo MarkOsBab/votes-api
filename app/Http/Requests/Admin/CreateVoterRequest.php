@@ -54,7 +54,9 @@ class CreateVoterRequest extends FormRequest
             'document.required' => 'El :attribute es requerido',
             'document.unique' => 'El :attribute ya está registrado',
             'is_candidate.required' => 'El :attribute es requerido',
-            'is_candidate.required' => 'El :attribute tiene un formato inválido',
+            'is_candidate.in' => 'El :attribute tiene un formato inválido',
+            'dob.required' => 'La :attribute es requerida',
+            'dob.date' => 'La :attribute tiene un formato incorrecto',
         ];
     }
 

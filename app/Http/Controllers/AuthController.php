@@ -26,12 +26,6 @@ class AuthController extends Controller
             return response()->json(['error' => 'Ocurrió un error al iniciar sesión.'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
-    public function me()
-    {
-        return response()->json(auth()->user());
-    }
-
     public function logout()
     {
         auth()->logout();

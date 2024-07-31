@@ -6,7 +6,8 @@
 ## Instalación del proyecto
 - Clonar el repositorio con el comando `git clone https://github.com/MarkOsBab/votes-api`
 - Instalar dependencias con el comando `composer install`
-- Crear un archivo nuevo llamado **.env** en la raiz del proyecto y copiar todas las variables de entorno ubicadas en el archivo .env.example
+- Crear un archivo nuevo llamado **.env** en la raiz del proyecto y copiar todas las variables de entorno ubicadas en el archivo .env.example con los valores apropiados para tu entorno local
 - Ejecutar el comando `php artisan key:generate` para generar el APP_KEY
 - Luego ejecutar el comando `php artisan jwt:generate` para generar la clave secreta de Json Web Token para autenticar a los usuarios
-- Luego de instalar las dependencias, ejecutar el comando `php artisan serve` para correr el servidor
+- Crear e insertar datos en la base de datos `php artisan migrate --seed`
+- Luego de instalar las dependencias y configurar base de datos y variables de entorno, ejecutar el comando `php artisan serve` para correr el servidor

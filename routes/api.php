@@ -16,7 +16,6 @@ Route::middleware('api')
             Route::post('/login', [AuthController::class, 'login'])->name('login');
             Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api')->name('logout');
             Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('auth:api')->name('refresh');
-            Route::get('/me', [AuthController::class, 'me'])->middleware('auth:api')->name('me');
         });
 
         Route::group(['prefix' => 'votes'], function() {
@@ -36,7 +35,6 @@ Route::middleware('api')
                 Route::get('', [StatController::class, 'index']);
                 Route::get('candidate-votes', [StatController::class, 'getCandidateVotes']);
             });
-            Route::get('stats', [StatController::class, 'index']);
 
             Route::prefix('candidates')->group(function() {
                 Route::get('most-voted', [AdminCandidateController::class, 'getMostVoted']);

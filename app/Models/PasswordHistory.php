@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PasswordHistory extends Model
 {
-    protected $fillable = ['password'];
+    protected $fillable = ['password', 'admin_id'];
 
     public function user()
     {

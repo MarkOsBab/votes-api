@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('admin_id');
             $table->foreign('admin_id')
                   ->references('id')
-                  ->on('voters')
+                  ->on('admins')
                   ->onDelete('cascade');
             $table->string('password');
             $table->timestamps();

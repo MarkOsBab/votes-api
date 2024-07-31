@@ -25,7 +25,7 @@ class ChangePassword extends FormRequest
     {
         return [
             'currentPassword' => ['required'],
-            'newPassword' => ['required', 'min:6', 'max:16'],
+            'newPassword' => ['required', 'min:6', 'max:16', 'regex:/[A-Z]/', 'regex:/[!@#$%^&*(),.?":{}|<>]/'],
         ];
     }
 
@@ -44,6 +44,7 @@ class ChangePassword extends FormRequest
             'newPassword.required' => 'La :attribute es requerida',
             'newPassword.min' => 'La :attribute debe tener mínimo 6 caracteres',
             'newPassword.max' => 'La :attribute debe tener máximo 16 caracteres',
+            'newPassword.regex' => 'La :attribute debe contener al menos una letra mayúscula y un símbolo',
         ];
     }
 
